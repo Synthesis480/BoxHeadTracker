@@ -1,21 +1,22 @@
+using System.IO;
+using System.Net;
+using System.Net.Http.Headers;
+
 namespace BoxHeadTracker.Data
 {
     public class WarframeService {
+        public readonly string Platform = "pc";
 
-        public Task<string> GetWarframeAsync()
-        {
-            var worldState = GetWorldStateAsync("http://api.warframestat.us/pc").Result;
-            return Task.FromResult(worldState.sortie.rewardPool);
-
-        }
-
-        static async Task<WorldState> GetWorldStateAsync(string path)
+        public async Task<WorldState> GetWarframeAsync()
         {
             HttpClient client = new HttpClient();
+            client.BaseAddress = new System.Uri("http://api.warframestat.us/");
+            client.DefaultRequestHeaders.Accept.Clear();
+            client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
             WorldState worldState = null;
             try
             {
-                HttpResponseMessage response = await client.GetAsync(path);
+                HttpResponseMessage response = await client.GetAsync(Platform);
 
                 if (response.IsSuccessStatusCode)
                 {
@@ -26,8 +27,10 @@ namespace BoxHeadTracker.Data
             {
                 var error = ex.Message;
             }
-            
-            return worldState;
+
+            return worldState ;
+
+
         }
     }
 }

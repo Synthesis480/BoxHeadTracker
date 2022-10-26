@@ -22,9 +22,12 @@ else
 
 @code {
     private string warframeDisplay;
+    private WorldState currentWorldState;
 
     protected override async Task OnInitializedAsync()
     {
-        warframeDisplay = await _warframeService.GetWarframeAsync();
+        currentWorldState = await _warframeService.GetWarframeAsync();
+        warframeDisplay = string.Join(", ", currentWorldState.events.Select(e => e.asString).ToList());
+
     }
 }
