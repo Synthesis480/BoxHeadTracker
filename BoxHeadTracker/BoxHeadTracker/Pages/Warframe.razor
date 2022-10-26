@@ -1,0 +1,30 @@
+﻿@page "/warframe"
+
+<PageTitle>Warframe</PageTitle>
+
+@using BoxHeadTracker.Data
+@inject WarframeService _warframeService
+
+<h1>Warframe</h1>
+
+<p>This component demonstrates fetching data from a service.</p>
+
+@if (warframeDisplay == null)
+{
+    <p><em>Loading...</em></p>
+}
+else
+{
+    <p>
+        @warframeDisplay
+    </p>
+}
+
+@code {
+    private string warframeDisplay;
+
+    protected override async Task OnInitializedAsync()
+    {
+        warframeDisplay = await _warframeService.GetWarframeAsync();
+    }
+}
